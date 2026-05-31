@@ -61,6 +61,16 @@ public class LoginCourierTest {
     }
 
     @Test
+    @DisplayName("Ошибка авторизации при неверном пароле")
+    public void loginFailsWithWrongPassword() {
+        // Передаем правильный логин, но неверный пароль
+        CourierCredentials credentials = new CourierCredentials(dynamicLogin, password + "_wrong");
+        Response response = courierClient.login(credentials);
+
+        response.then().statusCode(404).body("message", equalTo("Учетная запись не найдена"));
+    }
+
+    @Test
     @DisplayName("Ошибка авторизации без логина")
     public void loginFailsWithoutLogin() {
         CourierCredentials credentials = new CourierCredentials("", password);
